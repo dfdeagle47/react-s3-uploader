@@ -38,6 +38,10 @@ function S3Router(options, middleware) {
       };
     }
 
+    var getPutParams = options.getPutParams || function() {
+      return {};
+    }
+
     if (options.uniquePrefix === undefined) {
         options.uniquePrefix = true;
     }
@@ -87,13 +91,13 @@ function S3Router(options, middleware) {
         }
 
         var s3 = getS3();
-        var params = {
+        var params = Object.assign({
             Bucket: S3_BUCKET,
             Key: fileKey,
             Expires: 60,
             ContentType: mimeType,
             ACL: options.ACL || 'private'
-        };
+        }, getPutParams());
         s3.getSignedUrl('putObject', params, function(err, data) {
             if (err) {
                 console.log(err);
