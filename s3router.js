@@ -97,7 +97,7 @@ function S3Router(options, middleware) {
             Expires: 60,
             ContentType: mimeType,
             ACL: options.ACL || 'private'
-        }, getPutParams());
+        }, getPutParams(req, res));
         s3.getSignedUrl('putObject', params, function(err, data) {
             if (err) {
                 console.log(err);
